@@ -1,0 +1,225 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	text-decoration: none;
+}
+
+.header{
+	width: 100%;
+	height: 200px;
+	display: inline-block;
+	background-color: coral;
+	background-image: linear-gradient(to bottom right, orange, orangered);
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	
+}
+
+.inner_header{
+	height: 100%;
+	width: 98%;
+	margin: auto;
+}
+
+.title{
+	height: 100%;
+	width: 60%;
+	display: table;
+  margin-left: 0; 
+
+}
+
+.title h1{
+  text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+	color: white;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 40px;
+}
+
+.sidenav_icon{
+	float: left;
+	width: 5%;
+	height: 100%;
+	display: table;
+	background-color: #4a1500;
+}
+
+.icon{
+	display: table-cell;
+	vertical-align: middle;
+	height: 50%;
+	width: 50%;
+}
+
+.icon svg {
+  display: inline-block;
+  pointer-events: none;
+  position: relative;
+  vertical-align: middle;
+  fill: #fff;
+}
+
+.logo_container{
+  float: left;
+  width: 15%;
+  height: 100%;
+  display: table;
+  text-align: center;
+}
+
+.logo_container h1{
+  color: white;
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'Pacifico', cursive;
+  font-size: 50px;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  line-height: 1.2em;
+}
+
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: orangered; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #4a1500;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+.leaderboard_container {
+  transition: margin-left .5s;
+  margin: auto;
+  margin-top: 10px;
+  width: 80%;
+  background-color: #c9c9c9;
+}
+
+#searchInput {
+  background-image: url('search.svg'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 50%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 10px; /* Add some space below the input */
+  margin-left: 25%;
+  margin-top: 20px;
+}
+
+
+.content-table {
+  border-collapse: collapse;
+  margin: auto;
+  margin-top: 20px;
+  font-size: 0.9em;
+  min-width: 80%;
+  max-width: 90%;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Lexend Exa', sans-serif;
+  height: 75%;
+}
+
+.content-table thead tr {
+  background-color: #4a1500;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.content-table tbody tr:hover {
+  background-color: #ffb75e;
+  color: white;
+}
+.content-table tbody tr:nth-of-type(even):hover {
+   background-color: #ffb75e;
+  color: white;
+}
+
+.content-table tbody tr:nth-of-type(1) {
+  color: white;
+  background-color: coral;
+}
+.content-table tbody tr:nth-of-type(2) {
+  color: white;
+  background-color: coral;
+}
+.content-table tbody tr:nth-of-type(3) {
+  color: white;
+  background-color: coral;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.content-table tbody tr:nth-of-type(even):nth-of-type(2){
+  color: white;
+  background-color: coral;
+}
+
+.content-table tbody tr:last-of-type {
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  border-bottom: 2px solid #4a1500;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: orangered;
+}
+
+
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
