@@ -72,6 +72,23 @@ function loadLeaderboardData(id) {
 
 function fillLeaderboard(xhttp){
   var data = JSON.parse(xhttp.responseText);
+  var table = document.getElementById("leaderboard");
+
+  //add body
+  var head = document.createElement("tbody");
+  var html = "";
+
+  var prev =0;
+  var x = -1;
+  for(row in table) {
+    html+="<tr>";
+    
+
+    html+="</tr>";
+  }
+
+
+
   console.log(data);
 }
 
