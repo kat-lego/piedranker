@@ -54,30 +54,31 @@ function prepareTable(n){
 }
 
 function loadLeaderboardData(id) {
-  
+
   var assign = assignmentList[assignid];
   prepareTable();
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      fillLeaderboard();
+      fillLeaderboard(this);
     }
   };
 
   var request = "getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"$numberofquestions="+assign.number_of_questions;
   xhttp.open("GET", request , true);
   xhttp.send();
- 
+
 }
 
-function fillLeaderboard(){
-  alert("fillLeaderboard");
+function fillLeaderboard(xhttp){
+  var data = JSON.parse(xhttp.responseText);
+  console.log(data);
 }
 
 
 
 function searchFunction() {
-  // Declare variables 
+  // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchInput");
   filter = input.value.toUpperCase();
@@ -94,7 +95,6 @@ function searchFunction() {
       } else {
         tr[i].style.display = "none";
       }
-    } 
+    }
   }
 }
-

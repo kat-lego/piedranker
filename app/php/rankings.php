@@ -9,10 +9,10 @@ $assignmentList =  '{"69":{"mode":"OptiMode","language":"Python","number_of_ques
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Lexend+Exa|Pacifico|Ubuntu&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<script src="index.js"></script>
+	<script src="../javascript/script.js"></script>
 
     <script type="text/javascript">
         var assignid;
@@ -23,7 +23,7 @@ $assignmentList =  '{"69":{"mode":"OptiMode","language":"Python","number_of_ques
             assignmentList = <?php echo $assignmentList; ?>;
             console.log(assignmentList[69]);
             assignid = <?php echo $assignid;?>;
-            // loadLeaderboardData(assignid);
+            loadLeaderboardData(assignid);
             fillTitle();
             fillNav();
 		}

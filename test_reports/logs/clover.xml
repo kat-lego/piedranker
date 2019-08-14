@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Unit tests" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="0.031256">
+    <testsuite name="SampleTest" file="/var/www/html/piedranker/test/SampleTest.php" tests="1" assertions="0" errors="1" failures="0" skipped="0" time="0.031256">
+      <testcase name="testTomething" class="SampleTest" classname="SampleTest" file="/var/www/html/piedranker/test/SampleTest.php" line="8" assertions="0" time="0.031256">
+        <error type="PHPUnit\Framework\RiskyTestError">Risky Test
+</error>
+        <system-out>string(805) "[{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}}]"
+</system-out>
+      </testcase>
+    </testsuite>
+  </testsuite>
+</testsuites>
