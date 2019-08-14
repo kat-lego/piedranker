@@ -31,13 +31,26 @@ function fillNav() {
   }
 }
 
-function prepareTable(){
+function prepareTable(n){
   var table = document.getElementById("leaderboard");
   var id = table.id;
   var newt = document.createElement("table");
   newt.id = id;
   newt.className = "content-table";
-  el.parentNode.replaceChild(newt, table);
+  table.parentNode.replaceChild(newt, table);
+
+  //add table header
+  var head = document.createElement("thead");
+  var html = "<tr> <th>Rank</th> <th>name</th>";
+  // console.log(n);
+  for(var i =0;i<n;i++){
+    html+=" <th>Question"+i+"</th> ";
+  }
+  html+="<th>Total Points</th> </tr>";
+  head.innerHTML = html;
+  newt.appendChild(head);
+  console.log(html);
+
 }
 
 function loadLeaderboardData(id) {
@@ -47,15 +60,21 @@ function loadLeaderboardData(id) {
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("txtHint").innerHTML = this.responseText;
+      fillLeaderboard();
     }
   };
 
-  var request = "getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"$n="+assign.number_of_questions;
+  var request = "getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"$numberofquestions="+assign.number_of_questions;
   xhttp.open("GET", request , true);
   xhttp.send();
  
 }
+
+function fillLeaderboard(){
+  alert("fillLeaderboard");
+}
+
+
 
 function searchFunction() {
   // Declare variables 
