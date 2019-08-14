@@ -11,8 +11,50 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
+function fillTitle(){
+  var assign = assignmentList[assignid];
+  var t =  document.getElementById("h1_title");
+  t.innerHTML = assign.name + "</br>" + assign.mode;
+}
+
 function fillNav() {
-	// body...
+  var nav = document.getElementById("mySidenav");
+
+  for (var key in assignmentList) {
+    if (assignmentList.hasOwnProperty(key)) {
+      var a = document.createElement('a');
+      a.id = key;
+      a.setAttribute('href',"#");
+      a.innerHTML = assignmentList[key].name;
+      nav.appendChild(a);
+    }
+  }
+}
+
+function prepareTable(){
+  var table = document.getElementById("leaderboard");
+  var id = table.id;
+  var newt = document.createElement("table");
+  newt.id = id;
+  newt.className = "content-table";
+  el.parentNode.replaceChild(newt, table);
+}
+
+function loadLeaderboardData(id) {
+  
+  var assign = assignmentList[assignid];
+  prepareTable();
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("txtHint").innerHTML = this.responseText;
+    }
+  };
+
+  var request = "getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"$n="+assign.number_of_questions;
+  xhttp.open("GET", request , true);
+  xhttp.send();
+ 
 }
 
 function searchFunction() {
