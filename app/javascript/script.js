@@ -79,10 +79,15 @@ function fillLeaderboard(xhttp){
   var html = "";
 
   var prev =0;
-  var x = -1;
+  var x = 
   for(row in table) {
+    if(x!=row.total_score){
+      prev++;
+      x = row.total_score;
+    }
+
     html+="<tr>";
-    
+    html+="<td>"+prev+" </td> ";
 
     html+="</tr>";
   }
