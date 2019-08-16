@@ -1,6 +1,7 @@
 <?php
 
 $assignid = $_GET['assignid'];
+$assignid = $_GET['courseid'];
 $assignmentList =  '{"69":{"mode":"OptiMode","language":"Python","number_of_questions":1,"default_score":1000,"ordering":0,"course":2,"name":"df","duedate":1566255600}}';
 
 ?>
@@ -111,54 +112,7 @@ $assignmentList =  '{"69":{"mode":"OptiMode","language":"Python","number_of_ques
 	      <td>88,110</td>
 	      <td>dcode</td>
 	    </tr>
-	    <tr class="active-row">
-	      <td>2</td>
-	      <td>Sally</td>
-	      <td>72,400</td>
-	      <td>Students</td>
-	    </tr>
-	    <tr>
-	      <td>3</td>
-	      <td>Nick</td>
-	      <td>52,300</td>
-	      <td>dcode</td>
-	    </tr>
-	    	    <tr>
-	      <td>1</td>
-	      <td>Domenic</td>
-	      <td>88,110</td>
-	      <td>dcode</td>
-	    </tr>
-	    <tr class="active-row">
-	      <td>2</td>
-	      <td>Sally</td>
-	      <td>72,400</td>
-	      <td>Students</td>
-	    </tr>
-	    <tr>
-	      <td>3</td>
-	      <td>Nick</td>
-	      <td>52,300</td>
-	      <td>dcode</td>
-	    </tr>
-	    	    <tr>
-	      <td>1</td>
-	      <td>Domenic</td>
-	      <td>88,110</td>
-	      <td>dcode</td>
-	    </tr>
-	    <tr class="active-row">
-	      <td>2</td>
-	      <td>Sally</td>
-	      <td>72,400</td>
-	      <td>Students</td>
-	    </tr>
-	    <tr>
-	      <td>3</td>
-	      <td>Nick</td>
-	      <td>52,300</td>
-	      <td>dcode</td>
-	    </tr>
+
 
 	  </tbody>
 	</table>
@@ -166,12 +120,6 @@ $assignmentList =  '{"69":{"mode":"OptiMode","language":"Python","number_of_ques
 	<div id="mySidenav" class="sidenav">
   	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	</div>
-
-	<div>
-		FOOTER
-	</div>
-
-
 
 </body>
 </html>

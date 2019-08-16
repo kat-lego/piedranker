@@ -49,14 +49,12 @@ function prepareTable(n){
   html+="<th>Total Points</th> </tr>";
   head.innerHTML = html;
   newt.appendChild(head);
-  console.log(html);
-
 }
 
 function loadLeaderboardData(id) {
 
   var assign = assignmentList[assignid];
-  prepareTable();
+  prepareTable(assign.number_of_questions);
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -73,27 +71,33 @@ function loadLeaderboardData(id) {
 function fillLeaderboard(xhttp){
   var data = JSON.parse(xhttp.responseText);
   var table = document.getElementById("leaderboard");
+  var n = assignmentList[assignid].number_of_questions;
+  console.log(n);
 
   //add body
-  var head = document.createElement("tbody");
+  var body = document.createElement("tbody");
   var html = "";
 
-  var prev =0;
-  var x = 
-  for(row in table) {
-    if(x!=row.total_score){
-      prev++;
-      x = row.total_score;
+  var pos =-1;
+  var x = null;
+  for(row in data) {
+    if(x!=data[row].total_score){
+      pos++;
+      x = data[row].total_score;
     }
 
     html+="<tr>";
-    html+="<td>"+prev+" </td> ";
-
+    html+="<td>"+pos+" </td> ";
+    html+="<td>"+data[row].firstname+" "+data[row].lastname+"</td>";
+    
+    for(var i=0;i<n;i++){
+      html+="<td>"+data[row][i].score+"</td>";
+    }
+    html+= "<td>"+data[row].total_score;+"</td>";
     html+="</tr>";
   }
-
-
-
+  body.innerHTML = html;
+  table.appendChild(body);
   console.log(data);
 }
 
