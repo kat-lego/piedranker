@@ -19,17 +19,26 @@ function fillTitle(){
 
 function fillNav() {
   var nav = document.getElementById("mySidenav");
-
+  var h = document.createElement('h2');
+  h.innerHTML = assignmentList[assignid].shortname;
+  nav.append(h);
+  var html = "";
   for (var key in assignmentList) {
     if (assignmentList.hasOwnProperty(key)) {
-      var a = document.createElement('a');
+      var a = document.createElement('span');
       a.id = key;
-      a.setAttribute('href',"#");
       a.innerHTML = assignmentList[key].name;
       nav.appendChild(a);
+      a.addEventListener("click",function(){
+        loadLeaderboardData(this.id);
+      });
+
     }
   }
 }
+
+
+
 
 function prepareTable(n){
   var table = document.getElementById("leaderboard");
@@ -62,7 +71,8 @@ function loadLeaderboardData(id) {
     }
   };
 
-  var request = "getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"$numberofquestions="+assign.number_of_questions;
+  var request = "../php/getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"&numberofquestions="+assign.number_of_questions;
+  console.log(request);
   xhttp.open("GET", request , true);
   xhttp.send();
 
@@ -98,7 +108,7 @@ function fillLeaderboard(xhttp){
   }
   body.innerHTML = html;
   table.appendChild(body);
-  console.log(data);
+  // console.log(data);
 }
 
 
@@ -113,7 +123,7 @@ function searchFunction() {
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {

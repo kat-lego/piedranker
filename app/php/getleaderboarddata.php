@@ -1,9 +1,12 @@
 <?php
+require_once('database_handler.php');
+
 $assignid = $_GET['assignid'];
 $default = $_GET['default'];
 $ordering = $_GET['ordering'];
 $numQ = $_GET['numberofquestions'];
 
-echo '[{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}},{"total_score":1000,"username":"architect","firstname":"Admin","lastname":"User","0":{"score":1000,"no_of_submittions":0,"status":0}}]
-';
+$dbh = new DatabaseHandler();
+echo json_encode($dbh->format_submission_data($assignid,$numQ,$default,$ordering));
+$dbh->close_connection();
 ?>
