@@ -27,7 +27,7 @@
 
 .title{
 	height: 100%;
-	width: 60%;
+	width: 50%;
 	display: table;
   margin-left: 0;
 
@@ -116,7 +116,7 @@
 
 .sidenav h2{
   font-size: 40px;
-  margin-block: 10px; 
+  margin-block: 10px;
 }
 
 /* When you mouse over the navigation links, change their color */
