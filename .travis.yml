@@ -22,7 +22,7 @@ before_install:
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
   - composer require --dev phpunit/dbunit
-- composer install
+  - composer install
 before_script:
   - mkdir -p ./test_reports/logs
 script:
