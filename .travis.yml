@@ -11,7 +11,7 @@ addons:
     sources:
       - mysql-5.7-trusty
     packages:
-     - mysql-serve
+     - mysql-server
 dist: trusty
 sudo: required
 before_install:
