@@ -6,7 +6,6 @@ class SampleTest extends TestCase
 {
 	public function test_close_connection(){
 		$ranker = new DatabaseHandler();
-		echo $_SERVER['SSH_CLIENT'];
 		$this->assertTrue($ranker->close_connection());
 	}
 
