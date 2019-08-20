@@ -3,17 +3,17 @@
 require_once('config.php');
 
 class DatabaseHandler {
-  protected $connection;
+  public $connection;
 
   public function __construct(){
     $this->connection = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
   }
 
   public function close_connection(){
-    $this->connection->close();
+    return $this->connection->close();
   }
 
-  private function get_data($stmt){
+  public function get_data($stmt){
     $stmt->execute();
     $data = null;
 
@@ -27,7 +27,7 @@ class DatabaseHandler {
     if($data)
       return $data;
     else
-      return "failed";
+      return false;
   }
 
   public function get_assignments($courseid){
@@ -52,42 +52,53 @@ class DatabaseHandler {
     $stmt = $this->connection->prepare($sql);
     $stmt->bind_param("i", $courseid);
     $data = $this->get_data($stmt);
-    // var_dump($data);
-    return $data;
+
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
+    
   }
 
   public function get_formatted_assignments($courseid){
-    $data = $this->get_assignments($courseid);
-    $data1 = array();
-    foreach($data as $key=>$value){
-      $id = $value['id'];
-      unset($value['id']);
-      $data1[$id] = $value;
+    if($data = $this->get_assignments($courseid)){
+      $data1 = array();
+      foreach($data as $key=>$value){
+        $id = $value['id'];
+        unset($value['id']);
+        $data1[$id] = $value;
+      }
+      $data1 = json_encode($data1);
+      return $data1;
+    }else{
+      return false;
     }
-    $data1 = json_encode($data1);
-    return $data1;
   }
 
-  // public function get_assingment_data($assign_id){
-  //   $sql = "SELECT mdl_customfeedback_assignment.mode,
-  //                  mdl_customfeedback_assignment.language,
-  //                  mdl_customfeedback_assignment.number_of_questions,
-  //                  mdl_customfeedback_assignment.default_score,
-  //                  mdl_customfeedback_assignment.ordering,
-  //                  mdl_assign.course,
-  //                  mdl_assign.name,
-  //                  mdl_assign.duedate
-  //           FROM mdl_customfeedback_assignment,mdl_assign
-  //           WHERE mdl_assign.id = ? AND
-  //                 mdl_customfeedback_assignment.id = mdl_assign.id;
-  //          ";
-  //   $stmt = $this->connection->prepare($sql);
-  //   $stmt->bind_param("i", $assign_id);
+  public function get_assingment_data($assign_id){
+    $sql = "SELECT mdl_customfeedback_assignment.mode,
+                   mdl_customfeedback_assignment.language,
+                   mdl_customfeedback_assignment.number_of_questions,
+                   mdl_customfeedback_assignment.default_score,
+                   mdl_customfeedback_assignment.ordering,
+                   mdl_assign.course,
+                   mdl_assign.name,
+                   mdl_assign.duedate
+            FROM mdl_customfeedback_assignment,mdl_assign
+            WHERE mdl_assign.id = ? AND
+                  mdl_customfeedback_assignment.id = mdl_assign.id;
+           ";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("i", $assign_id);
 
-  //   $data = $this->get_data($stmt);
-  //   // var_dump($data);
-  //   return reset($data);
-  // }
+    $data = $this->get_data($stmt);
+    if($data){
+      return reset($data);
+    }else{
+      return false;
+    }
+  }
 
   public function get_submission_data($assign_id){
     $A = TABLE_PREFIX.'customfeedback_submission';
@@ -110,47 +121,55 @@ class DatabaseHandler {
 
     $data = $this->get_data($stmt);
 
-    return $data;
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
   }
 
   public function format_submission_data($assign_id,$n,$default,$order){
-    $data = $this->get_submission_data($assign_id);
+    
+    if($data = $this->get_submission_data($assign_id)){
 
-    $tree = array();
-    foreach ($data as $key => $value) {
-      if(!array_key_exists($value["id"], $tree)){
-        $user = array();
-        $user["total_score"] = 0;
-        $user["username"] = $value["username"];
-        $user["firstname"] = $value["firstname"];
-        $user["lastname"] = $value["lastname"];
-        for($i=0;$i<$n;$i++){
-          $question = array();
-          $question["score"]=$default;
-          $question["no_of_submittions"]=0;
-          $question["status"]=-1;
-          $user[$i] = $question;
+      $tree = array();
+      foreach ($data as $key => $value) {
+        if(!array_key_exists($value["id"], $tree)){
+          $user = array();
+          $user["total_score"] = 0;
+          $user["username"] = $value["username"];
+          $user["firstname"] = $value["firstname"];
+          $user["lastname"] = $value["lastname"];
+          for($i=0;$i<$n;$i++){
+            $question = array();
+            $question["score"]=$default;
+            $question["no_of_submittions"]=0;
+            $question["status"]=-1;
+            $user[$i] = $question;
+          }
+          $tree[$value["id"]] = $user;
         }
-        $tree[$value["id"]] = $user;
+
+        $question = array();
+        $question["score"]=($value["status"]==4)?$value["score"]:$default;
+        $question["no_of_submittions"]=$value["no_of_submittions"];
+        $question["status"]=$value["status"];
+        $tree[$value["id"]][intval($value["question_number"])] = $question;
+        $tree[$value["id"]]["total_score"]+=$question["score"];
+
       }
 
-      $question = array();
-      $question["score"]=($value["status"]==4)?$value["score"]:$default;
-      $question["no_of_submittions"]=$value["no_of_submittions"];
-      $question["status"]=$value["status"];
-      $tree[$value["id"]][intval($value["question_number"])] = $question;
-      $tree[$value["id"]]["total_score"]+=$question["score"];
+      if($order == 0){
+        usort($tree, function($a, $b) { return $a["total_score"] - $b["total_score"]; });
+      }
+      else{
+        usort($tree, function($a, $b) { return $b["total_score"] - $a["total_score"]; });
+      }
 
+      return $tree;
+    }else{
+      return false;
     }
-
-    if($order == 0){
-      usort($tree, function($a, $b) { return $a["total_score"] - $b["total_score"]; });
-    }
-    else{
-      usort($tree, function($a, $b) { return $b["total_score"] - $a["total_score"]; });
-    }
-
-    return $tree;
   }
 
 }
