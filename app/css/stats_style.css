@@ -1,0 +1,154 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.page{
+  overflow-x: auto;
+}
+
+.header{
+	display: flex;
+  display: -webkit-flex;
+  /*justify-content: space-around;*/
+  align-content: center;
+  padding: 50px;
+  /*height: 200px;*/
+	background-color: coral;
+	background-image: linear-gradient(to bottom right, orange, orangered);
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+}
+
+.question_header,
+.logo_container,
+.title{
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.question_header h1,
+.title h1{
+	color: white;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 40px;
+}
+
+.logo_container h1{
+  color: white;
+  font-family: 'Pacifico', cursive;
+  font-size: 50px;
+  line-height: 1.2em;
+}
+
+.question_header h1{
+   text-align: right;
+}
+
+
+/* Container for flexboxes */
+.row {
+  margin-top: 10px;
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* Create three equal columns that sits next to each other */
+.column1{
+  -webkit-flex: 0.7;
+  -ms-flex: 0.7;
+  flex: 0.7;
+  padding: 10px;
+}
+
+/* Create three equal columns that sits next to each other */
+.column2 {
+  -webkit-flex: 0.3;
+  -ms-flex: 0.3;
+  flex: 0.3;
+  padding: 10px;
+
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .row {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+
+
+.content-table {
+  border-collapse: collapse;
+  margin: auto;
+  margin-top: 20px;
+  font-size: 0.9em;
+  min-width: 80%;
+  max-width: 90%;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Lexend Exa', sans-serif;
+}
+
+.content-table thead tr {
+  background-color: #4a1500;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.content-table tbody tr:hover {
+  background-color: #ffb75e;
+  color: white;
+}
+.content-table tbody tr:nth-of-type(even):hover {
+   background-color: #ffb75e;
+   color: white;
+}
+
+.column1 .content-table tbody tr:nth-of-type(1) ,
+.column1 .content-table tbody tr:nth-of-type(2) ,
+.column1 .content-table tbody tr:nth-of-type(3) {
+  color: white;
+  background-color: coral;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.column1 .content-table tbody tr:nth-of-type(even):nth-of-type(2){
+  color: white;
+  background-color: coral;
+}
+
+.content-table tbody tr:last-of-type {
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  border-bottom: 2px solid #4a1500;
+}
+
+.column2 .content-table tbody tr:last-of-type {
+  background-color: coral;
+  color: white;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: orangered;
+}
+
