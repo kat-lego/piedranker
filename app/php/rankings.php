@@ -20,13 +20,15 @@ $dbh->close_connection();
 	<script src="../javascript/script.js"></script>
 
   <script type="text/javascript">
-    var assignid;
+		var assignid;
+		var courseid;
 		var assignmentList; //json with data about assignments
 		var leaderboardData; //json with leaderboard data
 
 		function preparedata(){
             assignmentList = <?php echo $assignmentList; ?>;
-            assignid = <?php echo $assignid; ?> ;
+			assignid = <?php echo $assignid; ?> ;
+			courseid = <?php echo $courseid; ?> ;
             // console.log(assignmentList[assignid]);
             loadLeaderboardData(assignid);
             fillTitle();
@@ -40,7 +42,7 @@ $dbh->close_connection();
 <body onload="preparedata()">
 	<div class= "page">
 		<div class= "header">
-		<div class="inner_header">
+		
 			<div class="sidenav_icon">
 			<div class="icon" onclick="openNav()">
 				<svg viewBox="0 0 24 24" x="0px" y="0px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -49,22 +51,26 @@ $dbh->close_connection();
 				</g>
 				</svg>
 			</div>
-			</div>
 
 			<div class="logo_container">
-			<h1>Pied Ranks </h1>
+			<h1>Pied </br> Ranks </h1>
 			</div>
+
+			</div>
+
 
 			<div class="title">
 			<h1 id = "h1_title"> Assignment name <br/> Assignment mode </h1>
 			</div>
 
-		</div>
+			<div class="right_pad"></div>
+
+		
 
 		</div>
 
 		<input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for names..">
-
+		<div class = "leaderboard_container">
 		<table class="content-table" id="leaderboard">
 		<thead>
 			<tr>
@@ -121,7 +127,7 @@ $dbh->close_connection();
 
 		</tbody>
 		</table>
-
+	</div>
 		<div id="mySidenav" class="sidenav">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 		</div>

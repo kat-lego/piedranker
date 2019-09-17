@@ -30,7 +30,9 @@ function fillNav() {
       a.innerHTML = assignmentList[key].name;
       nav.appendChild(a);
       a.addEventListener("click",function(){
+        assignid = this.id;
         loadLeaderboardData(this.id);
+        fillTitle();
       });
 
     }
@@ -50,10 +52,10 @@ function prepareTable(n){
 
   //add table header
   var head = document.createElement("thead");
-  var html = "<tr> <th>Rank</th> <th>name</th>";
+  var html = "<tr> <th>Rank</th> <th>Name</th>";
   // console.log(n);
   for(var i =0;i<n;i++){
-    html+=" <th>Question"+i+"</th> ";
+    html+=" <th> <a href = '../php/stats.php?assignid="+assignid+"&courseid="+courseid+"&question_num="+i+"'>Question"+i+"</a></th> ";
   }
   html+="<th>Total Points</th> </tr>";
   head.innerHTML = html;
@@ -72,7 +74,7 @@ function loadLeaderboardData(id) {
   };
 
   var request = "../php/getleaderboarddata.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"&numberofquestions="+assign.number_of_questions;
-  console.log(request);
+  // console.log(request);
   xhttp.open("GET", request , true);
   xhttp.send();
 
@@ -115,20 +117,24 @@ function fillLeaderboard(xhttp){
 
 function searchFunction() {
   // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
+  var input, filter, table, tr, td, i, txtValue,j,found;
   input = document.getElementById("searchInput");
-  filter = input.value.toUpperCase();
+  var nameArr =  input.value.toUpperCase().split(":");
   table = document.getElementById("leaderboard");
   tr = table.getElementsByTagName("tr");
-
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
+      found = 0;
+      for(j=0;j<nameArr.length;++j){
+        if(txtValue.toUpperCase().indexOf(nameArr[j]) > -1){
+          tr[i].style.display = "";
+          found = 1;
+        }
+      }
+      if(found == 0){
         tr[i].style.display = "none";
       }
     }

@@ -15,7 +15,7 @@
   display: -webkit-flex;
   /*justify-content: space-around;*/
   align-content: center;
-  padding: 50px;
+  padding: 40px;
   /*height: 200px;*/
 	background-color: coral;
 	background-image: linear-gradient(to bottom right, orange, orangered);
@@ -33,6 +33,7 @@
 
 .question_header h1,
 .title h1{
+  text-align: center;
 	color: white;
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 40px;
@@ -71,7 +72,19 @@
   -ms-flex: 0.3;
   flex: 0.3;
   padding: 10px;
+}
 
+#searchInput {
+  background-image: url('../assets/search.svg'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 50%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 10px; /* Add some space below the input */
+  margin-left: 25%;
+  margin-top: 20px;
 }
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
@@ -80,6 +93,24 @@
     -webkit-flex-direction: column;
     flex-direction: column;
   }
+
+  .header{
+    padding: 7px;;
+  }
+
+  .question_header h1,
+  .title h1{
+    font-size: 13px;
+  }
+  
+  .logo_container h1{
+    color: white;
+    font-family: 'Pacifico', cursive;
+    font-size: 17px;
+    line-height: 1.2em;
+  }
+
+
 }
 
 
@@ -107,6 +138,10 @@
 .content-table th,
 .content-table td {
   padding: 12px 15px;
+}
+
+.content-table th a{
+  color: white;
 }
 
 .content-table tbody tr {
