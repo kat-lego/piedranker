@@ -31,6 +31,8 @@ function fillNav() {
       nav.appendChild(a);
       a.addEventListener("click",function(){
         assignid = this.id;
+        var assign = assignmentList[assignid];
+        prepareTable(assign.number_of_questions);
         loadLeaderboardData(this.id);
         fillTitle();
       });
@@ -65,7 +67,7 @@ function prepareTable(n){
 function loadLeaderboardData(id) {
 
   var assign = assignmentList[assignid];
-  prepareTable(assign.number_of_questions);
+  
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -105,7 +107,7 @@ function fillLeaderboard(xhttp){
     for(var i=0;i<n;i++){
       html+="<td>"+data[row][i].score+"</td>";
     }
-    html+= "<td>"+data[row].total_score;+"</td>";
+    html+= "<td>"+data[row].total_score;+"</td>"
     html+="</tr>";
   }
   body.innerHTML = html;
