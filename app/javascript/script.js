@@ -85,9 +85,10 @@ function loadLeaderboardData(id) {
 function fillLeaderboard(xhttp){
   var data = JSON.parse(xhttp.responseText);
   var table = document.getElementById("leaderboard");
+  var e = table.getElementsByTagName("tbody")[0];
+  if(e)table.removeChild(e);
   var n = assignmentList[assignid].number_of_questions;
-  console.log(n);
-
+  console.log("flash");
   //add body
   var body = document.createElement("tbody");
   var html = "";
@@ -142,3 +143,4 @@ function searchFunction() {
     }
   }
 }
+
