@@ -23,18 +23,18 @@ test("Test OpenNav", async ()=>{
 }, 10000);
 
 test("Test CloseNav", async ()=>{
-	//test if document.getElementById("mySidenav").style.width = "0" when you click the x button
-    // const browser = await puppeteer.launch({
-    //     headless: true,
-    //     // slowMo:80,
-    //     // args: ["--window-size=1920,1080"]
-    // });
+	// test if document.getElementById("mySidenav").style.width = "0" when you click the x button
+    const browser = await puppeteer.launch({
+        headless: true,
+        // slowMo:80,
+        // args: ["--window-size=1920,1080"]
+    });
 
-    // const page = await browser.newPage();
-    // await page.goto('http://1710409.ms.wits.ac.za/piedranker/app/php/rankings.php?assignid=83&courseid=15');
-    // await page.click(".closebtn");
-    // const a = await page.$eval('.sidenav', el=>el.style.width);
-    // expect(a).toBe("0%");
+    const page = await browser.newPage();
+    await page.goto('http://1710409.ms.wits.ac.za/piedranker/app/php/rankings.php?assignid=83&courseid=15');
+    await page.click(".closebtn");
+    const a = await page.$eval('.sidenav', el=>el.style.width);
+    expect(a).toBe("0%");
 
 
 

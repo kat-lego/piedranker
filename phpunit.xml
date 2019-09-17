@@ -14,8 +14,9 @@
          <filter>
            <whitelist>
             <directory suffix=".php">./app/php</directory>
-            <exclude>./app/php/rankings.php</exclude>
-            <exclude>./app/php/stats.php</exclude>
+            <exclude>
+               <file suffix=".php">./app/php/rankings.php</file>
+            </exclude>
            </whitelist>
          </filter>
 
