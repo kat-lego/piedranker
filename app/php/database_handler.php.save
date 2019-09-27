@@ -46,7 +46,6 @@ class DatabaseHandler {
             FROM $A,$B,$C
             WHERE $A.id = $B.id AND
                   $B.course = $C.id AND
-                  $C.id = ?
             ";
 
     $stmt = $this->connection->prepare($sql);
@@ -101,22 +100,14 @@ class DatabaseHandler {
   }
 
   public function insert_message_data($assign_id, $userMessage){
-    $link = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
- 
-	// Check connection
-	if($link === false){
-	    die("ERROR: Could not connect. " . mysqli_connect_error());
-	}
+    /*$sql = "INSERT INTO mdl_chat_messages (chatid, userid, message)
+	VALUES ($assign_id, 2, $userMessage)";*/
 
-    $sql = "INSERT INTO mdl_chat_messages (chatid, userid, message)
-	    VALUES ($assign_id, 2, $userMessage);";
-    
-	if(mysqli_query($link, $sql)){
-	    echo "Records inserted successfully.";
-	} else{
-	    echo "ERROR: Not able to execute $sql. " . mysqli_error($link);
+	if ($conn->query($sql) === TRUE) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . $conn->error;
 	}
-        mysqli_close($link);
   }
 
   public function get_submission_data($assign_id){

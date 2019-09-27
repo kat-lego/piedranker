@@ -18,6 +18,8 @@ function fillTitle(){
 }
 
 function fillNav() {
+  var type = "leaderboard";
+  var type2 = "teamsboard";
   var nav = document.getElementById("mySidenav");
   var h = document.createElement('h2');
   h.innerHTML = assignmentList[assignid].shortname;
@@ -33,16 +35,14 @@ function fillNav() {
         assignid = this.id;
         var assign = assignmentList[assignid];
         prepareTable(assign.number_of_questions);
-        loadLeaderboardData(this.id);
+        loadLeaderboardData(this.id, type);
+        loadLeaderboardData(assignid, type2);
         fillTitle();
       });
 
     }
   }
 }
-
-
-
 
 function prepareTable(n){
   var table = document.getElementById("leaderboard");
@@ -64,14 +64,12 @@ function prepareTable(n){
   newt.appendChild(head);
 }
 
-function loadLeaderboardData(id) {
-
+function loadLeaderboardData(id, type) {
   var assign = assignmentList[assignid];
-  
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      fillLeaderboard(this);
+      fillLeaderboard(this, type);
     }
   };
 
@@ -82,19 +80,23 @@ function loadLeaderboardData(id) {
 
 }
 
-function fillLeaderboard(xhttp){
+function fillLeaderboard(xhttp, type){
   var data = JSON.parse(xhttp.responseText);
-  var table = document.getElementById("leaderboard");
+  console.log(data);
+  var table = document.getElementById(type);
   var e = table.getElementsByTagName("tbody")[0];
   if(e)table.removeChild(e);
   var n = assignmentList[assignid].number_of_questions;
-  console.log("flash");
+  //console.log(n);
+
   //add body
   var body = document.createElement("tbody");
   var html = "";
 
   var pos =-1;
   var x = null;
+  
+  if(type == "leaderboard"){
   for(row in data) {
     if(x!=data[row].total_score){
       pos++;
@@ -104,19 +106,57 @@ function fillLeaderboard(xhttp){
     html+="<tr>";
     html+="<td>"+pos+" </td> ";
     html+="<td>"+data[row].firstname+" "+data[row].lastname+"</td>";
-    
+
     for(var i=0;i<n;i++){
       html+="<td>"+data[row][i].score+"</td>";
     }
-    html+= "<td>"+data[row].total_score;+"</td>"
+    html+= "<td>"+data[row].total_score;+"</td>";
     html+="</tr>";
   }
-  body.innerHTML = html;
+  }
+  else{
+  var countTeamA = 0;
+  var countTeamB = 0;
+   for(row in data) {
+     if(x!= data[row].total_score){
+       x += data[row].total_score;
+       //var n = str.charCodeAt(0);
+       if(data[row].username.charCodeAt(0) < 77 || data[row].username.charCodeAt(0) < 109){
+       countTeamA += data[row].total_score;
+       }
+       else{
+       countTeamB += data[row].total_score;
+       } 
+     }
+   }
+   
+   html+="<tr>";
+   // html+="<td>"+pos+" </td> ";
+    html+="<td>"+"Blue"+" "+"Team"+"</td>";
+
+    html+= "<td>"+countTeamA;+"</td>";
+    html+="</tr>";
+
+     html+="<tr>";
+   // html+="<td>"+"1"+" </td> ";
+    html+="<td>"+"Red"+" "+"Team"+"</td>";
+
+    html+= "<td>"+countTeamB;+"</td>";
+    html+="</tr>";
+  // console.log(x);
+  }
+   body.innerHTML = html;
   table.appendChild(body);
   // console.log(data);
 }
 
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
 
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
 
 function searchFunction() {
   // Declare variables
