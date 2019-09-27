@@ -424,6 +424,7 @@ div.ex3 {
 .time-right {
   float: right;
   color: #aaa;
+  font-size: 15px;
 }
 
 .time-left {

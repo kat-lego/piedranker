@@ -34,15 +34,15 @@ $dbh->close_connection();
             assignmentList = <?php echo $assignmentList; ?>;
 			assignid = <?php echo $assignid; ?> ;
 			courseid = <?php echo $courseid; ?> ;
-			// console.log(assignmentList[assignid]);
+			//console.log(assignmentList[assignid]);
 			var assign = assignmentList[assignid];
 			prepareTable(assign.number_of_questions);
-            //loadLeaderboardData(assignid);
+            loadMessageData(courseid);
 	    loadLeaderboardData(assignid, type);
-            loadLeaderboardData(assignid, type2);
+            //loadLeaderboardData(assignid, type2);
             fillTitle();
 			fillNav();
-			autoUpdate();
+			//autoUpdate();
 		}
 
 		function autoUpdate(){
@@ -104,14 +104,14 @@ $dbh->close_connection();
 				<button class="open-button" onclick="openForm()">Chat</button>
 
 				<div class="chat-popup" id="myForm">
-				  <form action="messaging.php" class="form-container">
+				 <form action="messaging.php" class="form-container">
 				    <h1>Chat</h1>
 
 				    <label for="msg"><b>Messages</b></label>
                                    
-		                    <div class="ex3">
+		                    <div id="messageBody" class="ex3">
                                     <!--Holding messages-->
- 				    	  <div class="container">
+ 				    	 <!-- <div class="container">
 					  <img src="/w3images/bandmember.jpg" alt="User" style="width:100%;">
 					  <p>Hello. How are you today?</p>
 					  <span class="time-right">11:00</span>
@@ -139,17 +139,13 @@ $dbh->close_connection();
 					  <img src="/w3images/bandmember.jpg" alt="User" style="width:100%;">
 					  <p>Sweet!</p>
 					  <span class="time-right">11:06</span>
-					</div>
+					</div>-->
                                     </div>
 
-				    <!--<form action="messaging.php" method="post">
-					Name: <input type="text" name="name"><br>
-				E-mail: <input type="text" name="email"><br>
-				<input type="submit">
-				</form>-->
 				    <form action="messaging.php" method="get" class="form-container">
-				    <textarea placeholder="Type message.." name="userMessage" required></textarea>
-                                    <input type='hidden' name='assignid' value="<?php echo $assignid; ?>" />
+				    <textarea id = "userMessage" placeholder="Type message.." name="userMessage" required></textarea>
+                                    <input type='hidden' name='courseid' value="<?php echo $courseid; ?>" />
+				    <input type='hidden' name='assignid' value="<?php echo $assignid; ?>" />
 
 				    <button type="submit" class="btn">Send</button>
 				    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
@@ -173,30 +169,4 @@ $dbh->close_connection();
 </body>
 </html>
 
-<script>
-// Get the modal
-var modal = document.getElementById("myModal");
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-</script>

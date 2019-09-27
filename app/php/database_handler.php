@@ -100,19 +100,40 @@ class DatabaseHandler {
     }
   }
 
-  public function insert_message_data($assign_id, $userMessage){
+  public function get_message_data($assign_id) {
+    $sql = "SELECT message, timestamp 
+            FROM mdl_chat_messages 
+            WHERE chatid = '$assign_id'
+            ORDER BY timestamp DESC;";
+    
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("i", $assign_id);
+    $data = $this->get_data($stmt);
+
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
+  }
+
+  public function insert_message_data($assignid, $courseid, $userMessage){
     $link = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
  
 	// Check connection
 	if($link === false){
 	    die("ERROR: Could not connect. " . mysqli_connect_error());
 	}
+    
+    $dateTime = new DateTime;
+    $dt = $dateTime->format('U');
 
-    $sql = "INSERT INTO mdl_chat_messages (chatid, userid, message)
-	    VALUES ($assign_id, 2, $userMessage);";
+    $sql = "INSERT INTO mdl_chat_messages (chatid, userid, message, timestamp)
+	    VALUES ($courseid, 2, $userMessage, $dt)";
     
 	if(mysqli_query($link, $sql)){
-	    echo "Records inserted successfully.";
+	    echo "Message sent successfully.";
+            header("Location: http://1710409.ms.wits.ac.za/piedranker/app/php/rankings.php?assignid=$assignid&courseid=$courseid");
 	} else{
 	    echo "ERROR: Not able to execute $sql. " . mysqli_error($link);
 	}
