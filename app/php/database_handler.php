@@ -42,6 +42,8 @@ class DatabaseHandler {
                    $B.id,
                    $B.name,
                    $B.duedate,
+                   $B.teamsubmission,
+                   $B.teamsubmissiongroupingid,
                    $C.shortname
             FROM $A,$B,$C
             WHERE $A.id = $B.id AND
@@ -84,7 +86,9 @@ class DatabaseHandler {
                    mdl_customfeedback_assignment.ordering,
                    mdl_assign.course,
                    mdl_assign.name,
-                   mdl_assign.duedate
+                   mdl_assign.duedate,
+                   mdl_assign.teamsubmission,
+                   mdl_assign.teamsubmissiongroupingid
             FROM mdl_customfeedback_assignment,mdl_assign
             WHERE mdl_assign.id = ? AND
                   mdl_customfeedback_assignment.id = mdl_assign.id;
@@ -98,6 +102,46 @@ class DatabaseHandler {
     }else{
       return false;
     }
+  }
+
+  public function get_message_data($assign_id) {
+    $sql = "SELECT message, timestamp 
+            FROM mdl_chat_messages 
+            WHERE chatid = '$assign_id'
+            ORDER BY timestamp DESC;";
+    
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("i", $assign_id);
+    $data = $this->get_data($stmt);
+
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
+  }
+
+  public function insert_message_data($assignid, $courseid, $userMessage){
+    $link = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+ 
+	// Check connection
+	if($link === false){
+	    die("ERROR: Could not connect. " . mysqli_connect_error());
+	}
+    
+    $dateTime = new DateTime;
+    $dt = $dateTime->format('U');
+
+    $sql = "INSERT INTO mdl_chat_messages (chatid, userid, message, timestamp)
+	    VALUES ($courseid, 2, $userMessage, $dt)";
+    
+	if(mysqli_query($link, $sql)){
+	    echo "Message sent successfully.";
+            header("Location: http://1710409.ms.wits.ac.za/piedranker/app/php/rankings.php?assignid=$assignid&courseid=$courseid");
+	} else{
+	    echo "ERROR: Not able to execute $sql. " . mysqli_error($link);
+	}
+        mysqli_close($link);
   }
 
   public function get_submission_data($assign_id){
@@ -127,6 +171,7 @@ class DatabaseHandler {
       return false;
     }
   }
+
 
   public function format_submission_data($assign_id,$n,$default,$order){
     
@@ -171,6 +216,71 @@ class DatabaseHandler {
       return false;
     }
   }
+
+  function format_group_submission_data($assign_id,$n,$default,$order){
+    if($data = $this->get_group_submission_data($assign_id)){
+
+      $tree = array();
+      foreach ($data as $key => $value) {
+        if(!array_key_exists($value["id"], $tree)){
+          $user = array();
+          $user["total_score"] = 0;
+          $user["teamname"] = $value["name"];
+          for($i=0;$i<$n;$i++){
+            $question = array();
+            $question["score"]=$default;
+            $question["status"]=-1;
+            $user[$i] = $question;
+          }
+          $tree[$value["id"]] = $user;
+        }
+
+        $question = array();
+        $question["score"]=($value["status"]==4)?$value["score"]:$default;
+        $question["status"]=$value["status"];
+        $tree[$value["id"]][intval($value["question_number"])] = $question;
+        $tree[$value["id"]]["total_score"]+=$question["score"];
+
+      }
+
+      if($order == 0){
+        usort($tree, function($a, $b) { return $a["total_score"] - $b["total_score"]; });
+      }
+      else{
+        usort($tree, function($a, $b) { return $b["total_score"] - $a["total_score"]; });
+      }
+
+      return $tree;
+    }else{
+      return false;
+    }
+  }
+
+  public function get_group_submission_data($assign_id){
+    $A = TABLE_PREFIX.'customfeedback_group_subs';
+    $B = TABLE_PREFIX.'groups';
+    
+    $sql = "SELECT $A.question_number,
+                   $A.score,
+                   $A.status,
+                   $B.id,
+                   $B.name
+            FROM $A,$B
+            WHERE $A.group_id=$B.id AND
+                  $A.assign_id = ?
+          ";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("i", $assign_id);
+
+    $data = $this->get_data($stmt);
+
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
+  }
+
 
 }
 ?>
