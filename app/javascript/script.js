@@ -51,10 +51,17 @@ function prepareTable(n){
   newt.id = id;
   newt.className = "content-table";
   table.parentNode.replaceChild(newt, table);
-
   //add table header
   var head = document.createElement("thead");
-  var html = "<tr> <th>Rank</th> <th>Name</th>";
+
+
+  var assign = assignmentList[assignid];
+  var html = "";
+  if(assign["teamsubmission"]){
+    html = "<tr> <th>Rank</th> <th>Team Name</th>";
+  }else{
+    html = "<tr> <th>Rank</th> <th>Name</th>";
+  }
   // console.log(n);
   for(var i =0;i<n;i++){
     html+=" <th> <a href = '../php/stats.php?assignid="+assignid+"&courseid="+courseid+"&question_num="+i+"'>Question"+i+"</a></th> ";
@@ -66,6 +73,12 @@ function prepareTable(n){
 
 function loadLeaderboardData(id, type) {
   var assign = assignmentList[assignid];
+  if(assign.teamsubmission){
+    loadGroupLeaderBoardData(id,type);
+    return;
+  }
+
+
   xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -78,6 +91,23 @@ function loadLeaderboardData(id, type) {
   xhttp.open("GET", request , true);
   xhttp.send();
 
+}
+
+function loadGroupLeaderBoardData(id, type){
+  var assign = assignmentList[assignid];
+  
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    
+    if (this.readyState == 4 && this.status == 200) {
+      fillGroupLeaderboard(this, type);
+    }
+  };
+
+  var request = "../php/getGroupLeaderboardData.php?assignid="+id+"&default="+assign.default_score+"&ordering="+assign.ordering+"&numberofquestions="+assign.number_of_questions;
+  console.log(request);
+  xhttp.open("GET", request , true);
+  xhttp.send();
 }
 
 function loadMessageData(id) {
@@ -178,6 +208,80 @@ function fillLeaderboard(xhttp, type){
    body.innerHTML = html;
   table.appendChild(body);
   // console.log(data);
+  searchFunction();
+
+}
+
+function fillGroupLeaderboard(xhttp, type){
+  var data = JSON.parse(xhttp.responseText);
+  console.log(data);
+  var table = document.getElementById(type);
+  var e = table.getElementsByTagName("tbody")[0];
+  if(e)table.removeChild(e);
+  var n = assignmentList[assignid].number_of_questions;
+  //console.log(n);
+
+  //add body
+  var body = document.createElement("tbody");
+  var html = "";
+
+  var pos =-1;
+  var x = null;
+  
+  if(type == "leaderboard"){
+  for(row in data) {
+    if(x!=data[row].total_score){
+      pos++;
+      x = data[row].total_score;
+    }
+
+    html+="<tr>";
+    html+="<td>"+pos+" </td> ";
+    html+="<td>"+data[row].teamname+"</td>";
+
+    for(var i=0;i<n;i++){
+      html+="<td>"+data[row][i].score+"</td>";
+    }
+    html+= "<td>"+data[row].total_score;+"</td>";
+    html+="</tr>";
+  }
+  }
+  else{
+  var countTeamA = 0;
+  var countTeamB = 0;
+   for(row in data) {
+     if(x!= data[row].total_score){
+       x += data[row].total_score;
+       //var n = str.charCodeAt(0);
+       if(data[row].username.charCodeAt(0) < 77 || data[row].username.charCodeAt(0) < 109){
+       countTeamA += data[row].total_score;
+       }
+       else{
+       countTeamB += data[row].total_score;
+       } 
+     }
+   }
+   
+   html+="<tr>";
+   // html+="<td>"+pos+" </td> ";
+    html+="<td>"+"Blue"+" "+"Team"+"</td>";
+
+    html+= "<td>"+countTeamA;+"</td>";
+    html+="</tr>";
+
+     html+="<tr>";
+   // html+="<td>"+"1"+" </td> ";
+    html+="<td>"+"Red"+" "+"Team"+"</td>";
+
+    html+= "<td>"+countTeamB;+"</td>";
+    html+="</tr>";
+  // console.log(x);
+  }
+   body.innerHTML = html;
+  table.appendChild(body);
+  // console.log(data);
+  searchFunction();
+
 }
 
 function openForm() {

@@ -42,6 +42,8 @@ class DatabaseHandler {
                    $B.id,
                    $B.name,
                    $B.duedate,
+                   $B.teamsubmission,
+                   $B.teamsubmissiongroupingid,
                    $C.shortname
             FROM $A,$B,$C
             WHERE $A.id = $B.id AND
@@ -84,7 +86,9 @@ class DatabaseHandler {
                    mdl_customfeedback_assignment.ordering,
                    mdl_assign.course,
                    mdl_assign.name,
-                   mdl_assign.duedate
+                   mdl_assign.duedate,
+                   mdl_assign.teamsubmission,
+                   mdl_assign.teamsubmissiongroupingid
             FROM mdl_customfeedback_assignment,mdl_assign
             WHERE mdl_assign.id = ? AND
                   mdl_customfeedback_assignment.id = mdl_assign.id;
@@ -168,6 +172,7 @@ class DatabaseHandler {
     }
   }
 
+
   public function format_submission_data($assign_id,$n,$default,$order){
     
     if($data = $this->get_submission_data($assign_id)){
@@ -211,6 +216,71 @@ class DatabaseHandler {
       return false;
     }
   }
+
+  function format_group_submission_data($assign_id,$n,$default,$order){
+    if($data = $this->get_group_submission_data($assign_id)){
+
+      $tree = array();
+      foreach ($data as $key => $value) {
+        if(!array_key_exists($value["id"], $tree)){
+          $user = array();
+          $user["total_score"] = 0;
+          $user["teamname"] = $value["name"];
+          for($i=0;$i<$n;$i++){
+            $question = array();
+            $question["score"]=$default;
+            $question["status"]=-1;
+            $user[$i] = $question;
+          }
+          $tree[$value["id"]] = $user;
+        }
+
+        $question = array();
+        $question["score"]=($value["status"]==4)?$value["score"]:$default;
+        $question["status"]=$value["status"];
+        $tree[$value["id"]][intval($value["question_number"])] = $question;
+        $tree[$value["id"]]["total_score"]+=$question["score"];
+
+      }
+
+      if($order == 0){
+        usort($tree, function($a, $b) { return $a["total_score"] - $b["total_score"]; });
+      }
+      else{
+        usort($tree, function($a, $b) { return $b["total_score"] - $a["total_score"]; });
+      }
+
+      return $tree;
+    }else{
+      return false;
+    }
+  }
+
+  public function get_group_submission_data($assign_id){
+    $A = TABLE_PREFIX.'customfeedback_group_subs';
+    $B = TABLE_PREFIX.'groups';
+    
+    $sql = "SELECT $A.question_number,
+                   $A.score,
+                   $A.status,
+                   $B.id,
+                   $B.name
+            FROM $A,$B
+            WHERE $A.group_id=$B.id AND
+                  $A.assign_id = ?
+          ";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("i", $assign_id);
+
+    $data = $this->get_data($stmt);
+
+    if($data){
+      return $data;
+    }else{
+      return false;
+    }
+  }
+
 
 }
 ?>

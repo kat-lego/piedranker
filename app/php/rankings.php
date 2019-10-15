@@ -22,7 +22,7 @@ $dbh->close_connection();
 	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
   <script type="text/javascript">
-	        var type = "leaderboard";
+	    var type = "leaderboard";
 		var type2 = "teamsboard";
 		var assignid;
 		var courseid;
@@ -31,14 +31,15 @@ $dbh->close_connection();
 		var prev_data = null;
 
 		function preparedata(){
-            assignmentList = <?php echo $assignmentList; ?>;
+			assignmentList = <?php echo $assignmentList; ?>;
 			assignid = <?php echo $assignid; ?> ;
 			courseid = <?php echo $courseid; ?> ;
 			//console.log(assignmentList[assignid]);
 			var assign = assignmentList[assignid];
 			prepareTable(assign.number_of_questions);
-            loadMessageData(courseid);
-	    loadLeaderboardData(assignid, type);
+			loadMessageData(courseid);
+			
+			loadLeaderboardData(assignid, type);
             //loadLeaderboardData(assignid, type2);
             fillTitle();
 			fillNav();

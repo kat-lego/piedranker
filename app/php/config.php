@@ -1,7 +1,7 @@
 <?php
 
 // MYSQL configuration
-if(false){
+if(true){
     define('DB_NAME', 'moodle');
     define('DB_USERNAME', 'root');
     define('DB_PASSWORD', '');
